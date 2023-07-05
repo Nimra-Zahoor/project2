@@ -3,15 +3,15 @@ import { useNavigate } from 'react-router-dom';
 import { Formik, Form, Field, ErrorMessage } from 'formik';
 import Login from './Login';
 
-function Signup() {
+function Signup(props) {
   const navigate = useNavigate();
-  const [User, setUser] = useState({ id: 0, name: '', email: '', password: '' });
+  const User = props.user;
   const handleSubmit = (values) => {
     User.id = User.id + 1;
     User.name = values.name;
     User.email = values.email;
     User.password = values.password;
-
+    
     let existingData = JSON.parse(localStorage.getItem('User')) || [];
     let emailExists = existingData.some(function (user) {
       return user.email === values.email;
@@ -20,6 +20,7 @@ function Signup() {
     if (emailExists) {
       alert('Email Exists');
     } else {
+     
       existingData.push(User);
       localStorage.setItem('User', JSON.stringify(existingData));
     
@@ -30,6 +31,7 @@ function Signup() {
   return (
     <div>
       <h1>Sign Up</h1>
+     
       <Formik
         initialValues={{ email: '', password: '', name: '' }}
         validate={(values) => {

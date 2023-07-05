@@ -6,20 +6,25 @@ import {BrowserRouter as Router, Routes, Route} from 'react-router-dom'
 import Login from './components/Authentication/Login';
 import PageNotFound from './PageNotFound';
 import Posts from './components/Posts/Posts';
+import CreatePosts from './components/Posts/CreatePosts';
+import Edit from './components/Edit/Edit';
+
 function App() {
+  const [User, setUser] = useState({ id: 0, name: '', email: '', password: '' ,logged_in : false});
 
   return (
-
+      
     <div className="App">
     <Router>
-      <Routes>
-        <Route exact path='/login' Component={Login}/>
-        <Route exact path="/" Component={Signup} />
-        <Route exact path="/posts" Component={Posts}/>
-        <Route exact path='*' Component={PageNotFound}/>
+    <Routes>
+    <Route exact path="/" element={<Signup user={User} />} />
 
-       
-      </Routes>
+     <Route exact path="/login" element={<Login user={User} />} />
+     <Route exact path="/posts" element={<Posts user={User} />} />
+     <Route exact path="/createPost" element={<CreatePosts user={User} />} />
+     <Route exact path="/edit" element={<Edit user={User} />} />
+     <Route path="*" element={<PageNotFound />} />
+  </Routes>
     </Router>
       
     </div>
