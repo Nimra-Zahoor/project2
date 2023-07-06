@@ -3,7 +3,7 @@ body{
     overflow: scroll;
 }
 .delete{
-    background-color: red !important;
+    background-color: red;
 }
 .posts{
     padding: 30px;

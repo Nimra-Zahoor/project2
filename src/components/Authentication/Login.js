@@ -1,13 +1,15 @@
 import React, { useState, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Posts from '../Posts/Posts';
-import { User, logged_in } from '../../globals';
+import './Login.css'
+import {logged_in } from '../../globals';
 
 function Login(props) {
   let existingData = JSON.parse(localStorage.getItem('User')) || [];
   const [Email, setEmail] = useState('');
   const [Password, setPassword] = useState('');
   const User = props.user;
+  console.log("User at login", User)
   const navigate = useNavigate();
   const emailRef = useRef(); // Ref for email input
   const passwordRef = useRef(); // Ref for password input
@@ -21,7 +23,6 @@ function Login(props) {
     for (let i in existingData) {
       if (existingData[i].email === Email && existingData[i].password === Password) {
         console.log('Login successfully');
-        
         User.logged_in = true;
         navigate('/posts');
         return; // Exit the function after successful login
@@ -37,7 +38,7 @@ function Login(props) {
 
   return (
     <div>
-      <div className="login">
+      <div className="form">
         <form onSubmit={handleLogin}>
           <label>Email:</label>
           <input type="email" ref={emailRef} onChange={(e) => setEmail(e.target.value)} value={Email} placeholder="Enter Your Email" />

@@ -1,13 +1,18 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Formik, Form, Field, ErrorMessage } from 'formik';
+import './Signup.css'
 import Login from './Login';
 
 function Signup(props) {
   const navigate = useNavigate();
+
   const User = props.user;
+  const [NewUser, setNewUser] = useState({id: User.id++})
+ 
+  console.log("USer",User)
   const handleSubmit = (values) => {
-    User.id = User.id + 1;
+    User.id = values.id ;
     User.name = values.name;
     User.email = values.email;
     User.password = values.password;
@@ -23,7 +28,7 @@ function Signup(props) {
      
       existingData.push(User);
       localStorage.setItem('User', JSON.stringify(existingData));
-    
+      setNewUser(User); 
       <Login/>
       navigate('/login');
     }
@@ -33,9 +38,10 @@ function Signup(props) {
       <h1>Sign Up</h1>
      
       <Formik
-        initialValues={{ email: '', password: '', name: '' }}
+        initialValues={{id:User.id, email: '', password: '', name: '' }}
         validate={(values) => {
           const errors = {};
+          values.id = User.id++;
           if (!values.email) {
             errors.email = 'Required';
           } else if (!/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i.test(values.email)) {
@@ -51,7 +57,7 @@ function Signup(props) {
         onSubmit={handleSubmit}
       >
         {() => (
-          <Form>
+          <Form className='form'>
             <label>Name: </label>
             <Field type="text" name="name" />
             <br />

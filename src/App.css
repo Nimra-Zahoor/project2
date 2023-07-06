@@ -1,10 +1,14 @@
 @import url('https://fonts.googleapis.com/css2?family=Comfortaa&display=swap');
+.delete-btn{
+  background-color: rgb(202, 17, 17);
 
+}
 body {
   background: linear-gradient(90deg, #e4e7ee 0%, #aabde3 100%);
   display: flex;
   flex-direction: row;
   justify-content: center;
+  overflow: scroll !important;
 }
 
 .login .signup {

@@ -22,7 +22,7 @@ function App() {
      <Route exact path="/login" element={<Login user={User} />} />
      <Route exact path="/posts" element={<Posts user={User} />} />
      <Route exact path="/createPost" element={<CreatePosts user={User} />} />
-     <Route exact path="/edit" element={<Edit user={User} />} />
+     <Route exact path="/editPost" element={<Edit user={User} />} />
      <Route path="*" element={<PageNotFound />} />
   </Routes>
     </Router>

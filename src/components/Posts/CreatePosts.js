@@ -1,11 +1,15 @@
 import React, { useState } from 'react';
 import './CreatePost.css';
 import { useNavigate } from 'react-router-dom';
-
+import { useLocation } from 'react-router-dom';
 function CreatePosts(props) {
-  const [post, setPost] = useState({ id: 0, userId: 0, title: '', body: '' });
-  const User = props.user;
+  
+  const { user } = props;
+  let postId =1;
+ 
+  const [post, setPost] = useState({id:1, userId: 1, title: '', body: '' });
   const navigate = useNavigate();
+
   const handleInputChange = (event) => {
     const { name, value } = event.target;
     setPost((prevPost) => ({
@@ -13,36 +17,46 @@ function CreatePosts(props) {
       [name]: value,
     }));
   };
-  const getpostId = () =>{
-    setPost({userId:User.id})
-    setPost({id: post.id=post.id + 1})
-    return post;
+  const getId = () =>{
+    let existingPosts = JSON.parse(localStorage.getItem('posts')) || [];
+    let prev_id;
+    for(let i in existingPosts)
+    {
+        if(existingPosts[i].userId == user.id)
+        {
+          
+           prev_id = existingPosts[i].id+1;
+        }
+    }
+    return prev_id;
   }
   const handleSubmit = (event) => {
-   
     event.preventDefault();
-    console.log('Working');
-    if (User.logged_in === true) { 
-        post.id = post.id+1;
-      const newPost = getpostId();
-      console.log('Submitted post:', newPost);
-      let existingPosts = JSON.parse(localStorage.getItem('post')) || [];
-      existingPosts.push(newPost);
-      localStorage.setItem('post', JSON.stringify(existingPosts));
-       alert('Post added')
-      navigate('/posts');
 
-    }
-    else{
-        alert('Please Login for Creating posts')
-        navigate('/login')
+    if (user.logged_in === true) {
+      const newPost = {
+        id: getId(),
+        userId: user.id,
+        title: post.title,
+        body: post.body,
+      };
+      setPost({ id:newPost.id, userId: user.id, title: '', body: '' });
+
+      console.log('Submitted post:', newPost);
+      let existingPosts = JSON.parse(localStorage.getItem('posts')) || [];
+      existingPosts.push(newPost);
+      localStorage.setItem('posts', JSON.stringify(existingPosts));
+
+      alert('Post added');
+      navigate('/posts');
+    } else {
+      alert('Please Login for Creating posts');
+      navigate('/login');
     }
   };
-
   return (
     <div>
-      <form onSubmit={handleSubmit}>
-       
+      <form className="form" onSubmit={handleSubmit}>
         <input
           className="Input"
           type="text"
@@ -67,5 +81,4 @@ function CreatePosts(props) {
     </div>
   );
 }
-
 export default CreatePosts;
