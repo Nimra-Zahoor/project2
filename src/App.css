@@ -1,7 +1,6 @@
-@import url('https://fonts.googleapis.com/css2?family=Comfortaa&display=swap');
-.delete-btn{
+@import url("https://fonts.googleapis.com/css2?family=Comfortaa&display=swap");
+.delete-btn {
   background-color: rgb(202, 17, 17);
-
 }
 body {
   background: linear-gradient(90deg, #e4e7ee 0%, #aabde3 100%);
@@ -15,13 +14,13 @@ body {
   width: 360px;
   padding: 8% 0 0;
   margin: auto;
-  font-family: 'Comfortaa', cursive;
+  font-family: "Comfortaa", cursive;
 }
 
 .form {
   position: relative;
   z-index: 1;
-  background: #FFFFFF;
+  background: #ffffff;
   border-radius: 10px;
   max-width: 360px;
   margin: 0 auto 100px;
@@ -39,7 +38,7 @@ body {
   padding: 15px;
   box-sizing: border-box;
   font-size: 14px;
-  font-family: 'Comfortaa', cursive;
+  font-family: "Comfortaa", cursive;
 }
 
 .form input:focus {
@@ -47,7 +46,7 @@ body {
 }
 
 .form button {
-  font-family: 'Comfortaa', cursive;
+  font-family: "Comfortaa", cursive;
   text-transform: uppercase;
   outline: 0;
   background: #4b6cb7;
@@ -55,7 +54,7 @@ body {
   border: 0;
   border-radius: 5px;
   padding: 15px;
-  color: #FFFFFF;
+  color: #ffffff;
   font-size: 14px;
   -webkit-transition: all 0.3 ease;
   transition: all 0.3 ease;
@@ -78,4 +77,166 @@ body {
   text-align: left;
   font-size: 10px;
   color: red;
+}
+/* Signup.css */
+
+.container {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 20px;
+  background-color: #f2f2f2;
+  border-radius: 5px;
+}
+
+h1 {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+form {
+  display: flex;
+  flex-direction: column;
+}
+
+label {
+  font-weight: bold;
+  margin-bottom: 5px;
+}
+
+input[type="text"],
+input[type="email"],
+input[type="password"] {
+  padding: 10px;
+  margin-bottom: 10px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+.error-message {
+  color: red;
+  margin-bottom: 10px;
+}
+
+button[type="submit"] {
+  padding: 10px 20px;
+  background-color: #4caf50;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+button[type="submit"]:hover {
+  background-color: #45a049;
+}
+body {
+  font-family: "Lucida Sans", "Lucida Sans Regular", "Lucida Grande",
+    "Lucida Sans Unicode", Geneva, Verdana, sans-serif;
+  overflow: scroll;
+}
+.delete {
+  background-color: red;
+}
+.posts {
+  padding: 30px;
+  border: 1px black solid;
+  background-color: white;
+  color: rgb(34, 4, 61);
+  margin-bottom: 2%;
+}
+.plusBtn {
+  color: white;
+  padding: 15px;
+  background-color: rgb(17, 92, 17);
+  border: none;
+  font-size: 30px;
+  margin-left: 90%;
+}
+.btn-delete {
+  background-color: red;
+}
+
+.Input {
+  width: 300px;
+  height: 30px;
+  padding: 10px;
+  font-size: 16px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  margin-bottom: 10px;
+}
+
+.body {
+  width: 300px;
+  height: 150px;
+  padding: 10px;
+  font-size: 16px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  margin-bottom: 10px;
+}
+
+button {
+  background-color: #4caf50;
+  color: white;
+  padding: 10px 20px;
+  font-size: 16px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+button:hover {
+  background-color: #45a049;
+}
+/* Signup.css */
+
+.container {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 20px;
+  background-color: #f2f2f2;
+  border-radius: 5px;
+}
+
+h1 {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+form {
+  display: flex;
+  flex-direction: column;
+}
+
+label {
+  font-weight: bold;
+  margin-bottom: 5px;
+}
+
+input[type="text"],
+input[type="email"],
+input[type="password"] {
+  padding: 10px;
+  margin-bottom: 10px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+.error-message {
+  color: red;
+  margin-bottom: 10px;
+}
+
+button[type="submit"] {
+  padding: 10px 20px;
+  background-color: #4CAF50;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+button[type="submit"]:hover {
+  background-color: #45a049;
 }

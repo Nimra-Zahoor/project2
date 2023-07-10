@@ -1,20 +1,18 @@
-import React, { useEffect, useState } from 'react';
-import './CreatePost.css';
-import { useNavigate } from 'react-router-dom';
-import { useLocation } from 'react-router-dom';
+import React, { useEffect, useState } from "react";
+import { useNavigate, useLocation } from "react-router-dom";
 
 function CreatePosts({ user }) {
-  const [currentUser, setCurrentUser] = useState(null)
-  const [post, setPost] = useState({id:1, userId: 1, title: '', body: '' });
-  
+  const [currentUser, setCurrentUser] = useState(null);
+  const [post, setPost] = useState({ id: 1, userId: 1, title: "", body: "" });
+
   const navigate = useNavigate();
 
-  let [postId , setPostId] = useState(1)
+  let [postId, setPostId] = useState(1);
 
   useEffect(() => {
-    const currentUser = JSON.parse(localStorage.getItem('currentUser'))
-    currentUser && setCurrentUser(currentUser)
-  }, []) 
+    const currentUser = JSON.parse(localStorage.getItem("currentUser"));
+    currentUser && setCurrentUser(currentUser);
+  }, []);
 
   const handleInputChange = (event) => {
     const { name, value } = event.target;
@@ -24,21 +22,24 @@ function CreatePosts({ user }) {
     }));
   };
 
-  const getId = () =>{
-    const existingPosts = JSON.parse(localStorage.getItem('posts')) || []
-    let postId = existingPosts.length + 1;
-    console.log("postId",postId)
-    setPostId(postId)
-    return postId;
-  }
+  const getId = () => {
+    setPostId(postId);
+   const existingPosts = JSON.parse(localStorage.getItem("serverPosts")) || [];
+    const existingCreatedPosts = JSON.parse(localStorage.getItem("posts")) || [];
+    let allPosts = []
+   allPosts = [...existingPosts,...existingCreatedPosts]
+   console.log("existingPosts.length",allPosts.length)
+   return allPosts.length + 1;
+   
+  };
 
   const handleSubmit = (event) => {
     event.preventDefault();
-
+    
     if (!currentUser) {
-      alert('Please Login for Creating posts');
-      navigate('/login');
-      return
+      alert("Please Login for Creating posts");
+      navigate("/login");
+      return;
     }
 
     const newPost = {
@@ -47,24 +48,28 @@ function CreatePosts({ user }) {
       title: post.title,
       body: post.body,
     };
-
-    if (newPost.id === null || newPost.id === undefined || newPost.id === '' || newPost.id === NaN) {
-      newPost.id =1;
-      console.log(newPost.id)
+     setPostId(newPost.id)
+    if (
+      newPost.id === null ||
+      newPost.id === undefined ||
+      newPost.id === "" ||
+      newPost.id === NaN
+    ) {
+      newPost.id = 1;
+      console.log(newPost.id);
     }
 
-   
-    setPost({ id:newPost.id, userId: currentUser.id, title: '', body: '' });
+    setPost({ id: newPost.id, userId: currentUser.id, title: "", body: "" });
 
-    console.log('Submitted post:', newPost);
-    const existingPosts = JSON.parse(localStorage.getItem('posts')) || [];
+    console.log("Submitted post:", newPost);
+    const existingPosts = JSON.parse(localStorage.getItem("posts")) || [];
     existingPosts.push(newPost);
-    localStorage.setItem('posts', JSON.stringify(existingPosts));
+    localStorage.setItem("posts", JSON.stringify(existingPosts));
 
-    alert('Post added');
-    navigate('/posts');
+    alert("Post added");
+    navigate("/posts");
   };
-  
+
   return (
     <div>
       <form className="form" onSubmit={handleSubmit}>
