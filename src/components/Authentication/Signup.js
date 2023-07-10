@@ -1,47 +1,65 @@
-import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
 import { Formik, Form, Field, ErrorMessage } from 'formik';
-import './Signup.css'
+import React, { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+
 import Login from './Login';
 
-function Signup(props) {
+import './Signup.css';
+
+function Signup() {
+  const [NewUser, setNewUser] = useState();
+  const [currentUser, setCurrentUser] = useState('')
+  const [UserId, setUserId] = useState(1)
   const navigate = useNavigate();
 
-  const User = props.user;
-  const [NewUser, setNewUser] = useState({id: User.id++})
- 
-  console.log("USer",User)
+  let allUsers;
+
+  useEffect(()=> {
+    setCurrentUser(JSON.parse(localStorage.getItem('currentUser')));
+    if (currentUser) navigate('/posts')
+  }, [])
+   
+  const getID = () =>{
+    const allUsers = JSON.parse(localStorage.getItem('User')) || []
+    let UserId = allUsers.length + 1;
+    console.log("UserID",UserId)
+    //setUserId(UserId)
+    return UserId;
+  }
   const handleSubmit = (values) => {
-    User.id = values.id ;
-    User.name = values.name;
-    User.email = values.email;
-    User.password = values.password;
-    
-    let existingData = JSON.parse(localStorage.getItem('User')) || [];
-    let emailExists = existingData.some(function (user) {
+    const newUser = {
+      id: getID(),
+      name: values.name,
+      email: values.email,
+      password: values.password,
+    };
+    allUsers = JSON.parse(localStorage.getItem('User')) || [];
+    let emailExists = allUsers.some(function (user) {
       return user.email === values.email;
     });
-
     if (emailExists) {
       alert('Email Exists');
     } else {
-     
-      existingData.push(User);
-      localStorage.setItem('User', JSON.stringify(existingData));
-      setNewUser(User); 
-      <Login/>
+      allUsers.push(newUser);
+      console.log('New user---', newUser);
+      setNewUser(newUser);
+      localStorage.setItem('currentUser', JSON.stringify(newUser)); //on login
+      localStorage.setItem('User', JSON.stringify(allUsers));
       navigate('/login');
     }
+
+    console.log('New user', newUser);
   };
+
   return (
     <div>
       <h1>Sign Up</h1>
-     
+
       <Formik
-        initialValues={{id:User.id, email: '', password: '', name: '' }}
+        initialValues={{ id: getID(), email: '', password: '', name: '' }}
         validate={(values) => {
           const errors = {};
-          values.id = User.id++;
+        //  values.id = newUserId + 1;
           if (!values.email) {
             errors.email = 'Required';
           } else if (!/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i.test(values.email)) {
@@ -57,7 +75,7 @@ function Signup(props) {
         onSubmit={handleSubmit}
       >
         {() => (
-          <Form className='form'>
+          <Form className="form">
             <label>Name: </label>
             <Field type="text" name="name" />
             <br />
@@ -69,12 +87,11 @@ function Signup(props) {
             <Field type="password" name="password" />
             <ErrorMessage name="password" />
             <br />
-            <button type="submit">
-              Submit
-            </button>
+            <button type="submit">Submit</button>
           </Form>
         )}
       </Formik>
+
     </div>
   );
 }

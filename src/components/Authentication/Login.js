@@ -1,45 +1,64 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Posts from '../Posts/Posts';
 import './Login.css'
-import {logged_in } from '../../globals';
-
-function Login(props) {
-  let existingData = JSON.parse(localStorage.getItem('User')) || [];
+import { useLocation } from 'react-router-dom';
+function Login({route}) {
   const [Email, setEmail] = useState('');
   const [Password, setPassword] = useState('');
-  const User = props.user;
-  console.log("User at login", User)
+  
   const navigate = useNavigate();
-  const emailRef = useRef(); // Ref for email input
-  const passwordRef = useRef(); // Ref for password input
-
+  const emailRef = useRef(); 
+  const passwordRef = useRef(); 
+  
+  useEffect(()=> {
+    const currentUser = JSON.parse(localStorage.getItem('currentUser')) 
+    console.log("User at login",currentUser)
+    if (currentUser) navigate('/posts')
+  }, [])
+  
   const handleLogin = (event) => {
-    event.preventDefault(); // Prevent default form submission
-
+    event.preventDefault(); 
+    const existingData = JSON.parse(localStorage.getItem('User')) || [];
+    
     console.log('I am working');
     console.log('Email', Email, 'Password', Password);
+    console.log("local storage on login",existingData)
+    
 
-    for (let i in existingData) {
-      if (existingData[i].email === Email && existingData[i].password === Password) {
-        console.log('Login successfully');
-        User.logged_in = true;
-        navigate('/posts');
-        return; // Exit the function after successful login
-      }
+    const currentUser = existingData.filter(user => user.email === Email && user.password === Password)
+    // if(!currentUser)
+    // {
+    //   alert('invalid email or password')
+    //   return
+    // }
+    console.log("current user at login",currentUser)
+
+    console.log('Current: ', currentUser, Password, Email, existingData)
+    if (currentUser?.length !== 0) {
+      localStorage.setItem('currentUser', JSON.stringify(currentUser[0]));
+      navigate('/posts'); 
+      return
     }
+   
 
     console.log('Invalid Email or Password');
     alert('Invalid email or password');
     setEmail('');
     setPassword('');
-    emailRef.current.focus(); // Set focus back to the email input
+    emailRef.current.focus(); 
   };
+
+  useEffect(() => {
+
+  }, [])
+
+  // console.log('props location: ', location)
 
   return (
     <div>
-      <div className="form">
-        <form onSubmit={handleLogin}>
+      <div className="login">
+        <form className='form' onSubmit={handleLogin}>
           <label>Email:</label>
           <input type="email" ref={emailRef} onChange={(e) => setEmail(e.target.value)} value={Email} placeholder="Enter Your Email" />
           <br />
@@ -51,5 +70,4 @@ function Login(props) {
     </div>
   );
 }
-
 export default Login;

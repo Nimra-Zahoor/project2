@@ -4,18 +4,21 @@ import { useNavigate } from 'react-router-dom';
 import '../Posts/posts.css';
 import Comments from '../Comments/Comments';
 
-function Posts(props) {
+function Posts() {
+  const navigate = useNavigate();
+
   const [data, setData] = useState([]);
   const [createdPost, setCreatedPosts] = useState([]);
   const [error, setError] = useState(null);
-  const navigate = useNavigate();
-  const User = props.user;
   const [editingPostId, setEditingPostId] = useState(null);
   const [editedTitle, setEditedTitle] = useState('');
   const [editedBody, setEditedBody] = useState('');
 
+  let [currentUser, setcurrentUser] = useState()
+
   useEffect(() => {
-   
+    currentUser = JSON.parse(localStorage.getItem('currentUser'))
+    setcurrentUser(currentUser)
     const fetchData = async () => {
       try {
         const response = await axios.get('https://jsonplaceholder.typicode.com/posts');
@@ -37,27 +40,42 @@ function Posts(props) {
     navigate('/createPost');
   };
 
-  const handleEdit = (postId, title, body) => {
-    setEditingPostId(postId);
-    setEditedTitle(title);
-    setEditedBody(body);
+  const handleLogout = () => {
+    localStorage.removeItem('currentUser')
+    alert('logged out')
+    navigate('/login');
+
+  }
+
+  const handleEdit = (postId, title, body, userId) => {
+    console.log("currentUser.id", currentUser.id, "userId", userId)
+    console.log("currentUser at posts", currentUser)
+    if (currentUser.id === userId) {
+      setEditingPostId(postId);
+      setEditedTitle(title);
+      setEditedBody(body);
+    }
+    else {
+      alert('You cannot edit this post');
+    }
   };
 
-  const handleUpdatePost = (postId) => {
+  const handleUpdatePost = (postId, userid) => {
     const updatedPosts = createdPost.map((post) => {
-      if (post.id === postId) {
+      if (post.id === postId && currentUser.id === userid) {
         return {
           ...post,
           title: editedTitle,
           body: editedBody,
         };
       }
+
       return post;
     });
 
     setCreatedPosts(updatedPosts);
     localStorage.setItem('posts', JSON.stringify(updatedPosts));
-    
+
     setEditingPostId(null);
     setEditedTitle('');
     setEditedBody('');
@@ -68,8 +86,12 @@ function Posts(props) {
     setCreatedPosts(updatedPosts);
     localStorage.setItem('posts', JSON.stringify(updatedPosts));
   }
+
+  if (data.length === 0) return <p>Loading...</p>
+
   return (
     <div>
+      <button onClick={handleLogout}>Logout</button>
       <div className='container'>
         <h1 className='title'>Posts</h1>
         <div className='addPosts'>
@@ -79,7 +101,7 @@ function Posts(props) {
         </div>
         {createdPost.map((item) => (
           <div className='posts' key={item.id}>
-           
+
             {editingPostId === item.id ? (
               <div>
                 <textarea
@@ -94,7 +116,7 @@ function Posts(props) {
                 />
                 <button
                   className='save-btn'
-                  onClick={() => handleUpdatePost(item.id)}
+                  onClick={() => handleUpdatePost(item.id, item.userId)}
                 >
                   Save
                 </button>
@@ -107,7 +129,7 @@ function Posts(props) {
                 <p>{item.body}</p>
                 <button
                   className='edit-btn'
-                  onClick={() => handleEdit(item.id, item.title, item.body)}
+                  onClick={() => handleEdit(item.id, item.title, item.body, item.userId)}
                 >
                   Edit
                 </button>
@@ -124,52 +146,31 @@ function Posts(props) {
         ))}
         {data.map((item) => (
           <div className='posts' key={item.id}>
-            <h5>Post by user: {item.userId}</h5>
-            <h5>Post ID: {item.id}</h5>
-            {!editingPostId === item.id ? (
-              <div>
-                <textarea
-                  value={editedTitle}
-                  onChange={(e) => setEditedTitle(e.target.value)}
-                  placeholder='Enter title...'
-                />
-                <textarea
-                  value={editedBody}
-                  onChange={(e) => setEditedBody(e.target.value)}
-                  placeholder='Enter post...'
-                />
-                <button
-                  className='save-btn'
-                  onClick={() => handleUpdatePost(item.id)}
-                >
-                  Save
-                </button>
-              </div>
-            ) : (
-              <>
-                <h3>Title:</h3>
-                <p>{item.title}</p>
-                <h3>Post:</h3>
-                <p>{item.body}</p>
-                <button
-                  className='edit-btn'
-                  onClick={() => handleEdit(item.id, item.title, item.body)}
-                >
-                  Edit
-                </button>
-                <button
-                  className='delete-btn'
-                  onClick={() => handleDelete(item.id)}
-                >
-                  Delete
-                </button>
-                <Comments postId={item.id} userId={item.userId} />
-                                      </>
-            )}
+
+            <>
+              <h3>Title:</h3>
+              <p>{item.title}</p>
+              <h3>Post:</h3>
+              <p>{item.body}</p>
+              <button
+                className='edit-btn'
+                onClick={() => handleEdit(item.id, item.title, item.body)}
+              >
+                Edit
+              </button>
+              <button
+                className='delete-btn'
+                onClick={() => handleDelete(item.id)}
+              >
+                Delete
+              </button>
+              <Comments postId={item.id} userId={item.userId} />
+            </>
+
           </div>
         ))}
       </div>
     </div>
   );
-            }
+}
 export default Posts;
