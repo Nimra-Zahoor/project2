@@ -9,7 +9,6 @@ import './Signup.css';
 function Signup() {
   const [NewUser, setNewUser] = useState();
   const [currentUser, setCurrentUser] = useState('')
-  const [UserId, setUserId] = useState(1)
   const navigate = useNavigate();
 
   let allUsers;
@@ -54,7 +53,6 @@ function Signup() {
   return (
     <div>
       <h1>Sign Up</h1>
-
       <Formik
         initialValues={{ id: getID(), email: '', password: '', name: '' }}
         validate={(values) => {
