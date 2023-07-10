@@ -17,7 +17,6 @@ function Signup() {
   const getID = () => {
     const allUsers = JSON.parse(localStorage.getItem("User")) || [];
     let UserId = allUsers.length + 1;
-    console.log("UserID", UserId);
     return UserId;
   };
   const handleSubmit = (values) => {
@@ -35,14 +34,11 @@ function Signup() {
       alert("Email Exists");
     } else {
       allUsers.push(newUser);
-      console.log("New user---", newUser);
       setNewUser(newUser);
       localStorage.setItem("currentUser", JSON.stringify(newUser)); //on login
       localStorage.setItem("User", JSON.stringify(allUsers));
       navigate("/login");
     }
-
-    console.log("New user", newUser);
   };
 
   return (

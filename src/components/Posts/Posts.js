@@ -48,15 +48,12 @@ function Posts() {
   };
 
   const handleEdit = (postId, title, body, userId) => {
-    console.log("currentUser.id", currentUser.id, "userId", userId)
-    console.log("currentUser at posts", currentUser)
     if (currentUser.id === userId) {
       setEditingPostId(postId);
       setEditedTitle(title);
       setEditedBody(body);
-    }
-    else {
-      alert('You cannot edit this post');
+    } else {
+      alert("You cannot edit this post");
     }
   };
 
@@ -126,27 +123,24 @@ function Posts() {
                 <p>{item.title}</p>
                 <h3>Post:</h3>
                 <p>{item.body}</p>
-                {item.userId === currentUser.id && <>
-                
-                  
-                  <button
-                  className="edit-btn"
-                  onClick={() =>
-                    handleEdit(item.id, item.title, item.body, item.userId)
-                  }
-                >
-                  Edit
-                </button>
-                <button
-                  className="delete-btn"
-                  onClick={() => handleDelete(item.id)}
-                >
-                  Delete
-                </button>
-                
-                </>}
-                
-               
+                {item.userId === currentUser.id && (
+                  <>
+                    <button
+                      className="edit-btn"
+                      onClick={() =>
+                        handleEdit(item.id, item.title, item.body, item.userId)
+                      }
+                    >
+                      Edit
+                    </button>
+                    <button
+                      className="delete-btn"
+                      onClick={() => handleDelete(item.id)}
+                    >
+                      Delete
+                    </button>
+                  </>
+                )}
 
                 <Comments postId={item.id} userId={item.userId} />
               </>

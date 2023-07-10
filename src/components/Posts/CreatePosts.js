@@ -24,18 +24,17 @@ function CreatePosts({ user }) {
 
   const getId = () => {
     setPostId(postId);
-   const existingPosts = JSON.parse(localStorage.getItem("serverPosts")) || [];
-    const existingCreatedPosts = JSON.parse(localStorage.getItem("posts")) || [];
-    let allPosts = []
-   allPosts = [...existingPosts,...existingCreatedPosts]
-   console.log("existingPosts.length",allPosts.length)
-   return allPosts.length + 1;
-   
+    const existingPosts = JSON.parse(localStorage.getItem("serverPosts")) || [];
+    const existingCreatedPosts =
+      JSON.parse(localStorage.getItem("posts")) || [];
+    let allPosts = [];
+    allPosts = [...existingPosts, ...existingCreatedPosts];
+    return allPosts.length + 1;
   };
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    
+
     if (!currentUser) {
       alert("Please Login for Creating posts");
       navigate("/login");
@@ -48,7 +47,7 @@ function CreatePosts({ user }) {
       title: post.title,
       body: post.body,
     };
-     setPostId(newPost.id)
+    setPostId(newPost.id);
     if (
       newPost.id === null ||
       newPost.id === undefined ||
@@ -56,12 +55,9 @@ function CreatePosts({ user }) {
       newPost.id === NaN
     ) {
       newPost.id = 1;
-      console.log(newPost.id);
     }
 
     setPost({ id: newPost.id, userId: currentUser.id, title: "", body: "" });
-
-    console.log("Submitted post:", newPost);
     const existingPosts = JSON.parse(localStorage.getItem("posts")) || [];
     existingPosts.push(newPost);
     localStorage.setItem("posts", JSON.stringify(existingPosts));
