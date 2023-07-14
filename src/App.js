@@ -1,16 +1,14 @@
-import "./App.css";
-import React, { useEffect, useState } from "react";
-import Signup from "./components/Authentication/Signup";
-import {
-  BrowserRouter as Router,
-  Routes,
-  Route,
-  useNavigate,
-} from "react-router-dom";
+import React from "react";
+
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+
+import CreatePosts from "./components/Posts/CreatePosts";
 import Login from "./components/Authentication/Login";
 import PageNotFound from "./PageNotFound";
 import Posts from "./components/Posts/Posts";
-import CreatePosts from "./components/Posts/CreatePosts";
+import Signup from "./components/Authentication/Signup";
+
+import "./App.css";
 
 function App() {
   return (

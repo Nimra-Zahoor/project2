@@ -16,7 +16,7 @@ function Signup() {
 
   const getID = () => {
     const allUsers = JSON.parse(localStorage.getItem("User")) || [];
-    let UserId = allUsers.length + 1;
+    let UserId = allUsers.length + 1;//
     return UserId;
   };
   const handleSubmit = (values) => {
@@ -27,7 +27,7 @@ function Signup() {
       password: values.password,
     };
     allUsers = JSON.parse(localStorage.getItem("User")) || [];
-    let emailExists = allUsers.some(function (user) {
+    let emailExists = allUsers.some(function (user) {//
       return user.email === values.email;
     });
     if (emailExists) {

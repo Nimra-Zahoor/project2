@@ -1,5 +1,7 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
+import { v4 as uuid } from "uuid";
+import { fetchComments } from "../API/APIcalls";
 
 const Comments = ({ postId }) => {
   const [comments, setComments] = useState([]);
@@ -8,44 +10,30 @@ const Comments = ({ postId }) => {
   const [editingCommentText, setEditingCommentText] = useState("");
   const [newComment, setNewComment] = useState("");
 
+  const unique_id = uuid();
+  const small_id = unique_id.slice(0, 8);
+
   useEffect(() => {
     setCurrentUser(JSON.parse(localStorage.getItem("currentUser")));
-    const fetchComments = async () => {
-      try {
-        const response = await axios.get(
-          `https://jsonplaceholder.typicode.com/posts/${postId}/comments`
-        );
-        const allComment = localStorage.getItem("comments");
-        let existingComments = [];
-        if (allComment) {
-          existingComments = JSON.parse(allComment) || [];
-        }
-        setComments([...existingComments, ...response.data]);
-      } catch (error) {
-        console.error("Error fetching comments:", error);
+    const fetchCommentsData = async () => {
+      const response = await fetchComments(postId);
+      const allComment = localStorage.getItem("comments");
+      let existingComments = [];
+      if (allComment) {
+        existingComments = JSON.parse(allComment) || [];
       }
+      setComments([...response, ...existingComments]);
     };
-    fetchComments();
+    fetchCommentsData();
   }, [postId]);
 
   const saveCommentsToLocalStorage = (updatedComments) => {
     localStorage.setItem("comments", JSON.stringify(updatedComments));
   };
 
-  const getId = () => {
-    const allComments = localStorage.getItem("comments");
-    if (allComments) {
-      const existingComments = JSON.parse(allComments) || [];
-      console.log(existingComments?.length);
-      return existingComments?.length + 1;
-    } else {
-      return 1;
-    }
-  };
-
   const handleAddComment = () => {
     const comment = {
-      id: getId(),
+      id: small_id,
       postId: postId,
       user_id: currentUser.id,
       body: newComment,
@@ -59,7 +47,8 @@ const Comments = ({ postId }) => {
   };
 
   const handleEditComment = (commentId) => {
-    const commentToEdit = [...comments].find(
+    const commentToEdit = comments.find(
+      //
       (comment) =>
         comment.id === commentId && comment.user_id === currentUser.id
     );

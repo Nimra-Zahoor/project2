@@ -1,7 +1,10 @@
 import React, { useEffect, useState } from "react";
+
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+
 import Comments from "../Comments/Comments";
+import { fetchPosts } from "../API/APIcalls";
 
 function Posts() {
   const navigate = useNavigate();
@@ -18,15 +21,8 @@ function Posts() {
     currentUser = JSON.parse(localStorage.getItem("currentUser"));
     setcurrentUser(currentUser);
     const fetchData = async () => {
-      try {
-        const response = await axios.get(
-          "https://jsonplaceholder.typicode.com/posts"
-        );
-        setData(response.data);
-        localStorage.setItem("serverPosts", JSON.stringify(response.data));
-      } catch (error) {
-        setError(error);
-      }
+      const response = await fetchPosts();
+      setData(response);
     };
 
     fetchData();
@@ -84,7 +80,7 @@ function Posts() {
     localStorage.setItem("posts", JSON.stringify(updatedPosts));
   };
 
-  if (data.length === 0) return <p>Loading...</p>;
+  if (data?.length === 0) return <p>Loading...</p>;
 
   return (
     <div>
@@ -147,7 +143,7 @@ function Posts() {
             )}
           </div>
         ))}
-        {data.map((item) => (
+        {data?.map((item) => (
           <div className="posts" key={item.id}>
             <>
               <h3>Title:</h3>

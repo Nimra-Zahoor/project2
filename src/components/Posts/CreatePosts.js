@@ -1,13 +1,16 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 
+import { v4 as uuid } from "uuid";
+
 function CreatePosts({ user }) {
   const [currentUser, setCurrentUser] = useState(null);
   const [post, setPost] = useState({ id: 1, userId: 1, title: "", body: "" });
 
   const navigate = useNavigate();
 
-  let [postId, setPostId] = useState(1);
+  const unique_id = uuid();
+  const small_id = unique_id.slice(0, 8);
 
   useEffect(() => {
     const currentUser = JSON.parse(localStorage.getItem("currentUser"));
@@ -22,16 +25,6 @@ function CreatePosts({ user }) {
     }));
   };
 
-  const getId = () => {
-    setPostId(postId);
-    const existingPosts = JSON.parse(localStorage.getItem("serverPosts")) || [];
-    const existingCreatedPosts =
-      JSON.parse(localStorage.getItem("posts")) || [];
-    let allPosts = [];
-    allPosts = [...existingPosts, ...existingCreatedPosts];
-    return allPosts.length + 1;
-  };
-
   const handleSubmit = (event) => {
     event.preventDefault();
 
@@ -42,20 +35,11 @@ function CreatePosts({ user }) {
     }
 
     const newPost = {
-      id: getId(),
+      id: small_id,
       userId: currentUser.id,
       title: post.title,
       body: post.body,
     };
-    setPostId(newPost.id);
-    if (
-      newPost.id === null ||
-      newPost.id === undefined ||
-      newPost.id === "" ||
-      newPost.id === NaN
-    ) {
-      newPost.id = 1;
-    }
 
     setPost({ id: newPost.id, userId: currentUser.id, title: "", body: "" });
     const existingPosts = JSON.parse(localStorage.getItem("posts")) || [];
