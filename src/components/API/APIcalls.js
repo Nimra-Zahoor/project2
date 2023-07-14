@@ -17,7 +17,6 @@ export const fetchPosts = async () => {
       "https://jsonplaceholder.typicode.com/posts"
     );
     return response.data;
-    localStorage.setItem("serverPosts", JSON.stringify(response.data));
   } catch (error) {
     return [];
   }

@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 
-import axios from "axios";
 import { useNavigate } from "react-router-dom";
 
 import Comments from "../Comments/Comments";
@@ -10,7 +9,7 @@ function Posts() {
   const navigate = useNavigate();
 
   const [createdPost, setCreatedPosts] = useState([]);
-  let [currentUser, setcurrentUser] = useState();
+  const [currentUser, setcurrentUser] = useState();
   const [data, setData] = useState([]);
   const [error, setError] = useState(null);
   const [editingPostId, setEditingPostId] = useState(null);

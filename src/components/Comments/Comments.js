@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from "react";
-import axios from "axios";
 import { v4 as uuid } from "uuid";
 import { fetchComments } from "../API/APIcalls";
 
